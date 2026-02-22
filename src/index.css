@@ -1,0 +1,77 @@
+:root {
+  /* 1. Define DEFAULT values for Dark Mode here */
+  --bg-color: #000000;
+  --text-color: rgba(228, 229, 179, 0.87);
+  --btn-bg: #1a1a1a;
+  --input-bg: #000000; /* Darker grey for inputs */
+  --input-text: #ffffff;
+
+  /* Apply the variables to the root */
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+
+/* 2. Override for Light Mode */
+:root.light-mode {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --btn-bg: #eeeeee;
+  --input-bg: #ffffff;
+  --input-text: #000000;
+}
+
+/* 3. Apply to Inputs */
+input,textarea {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  border: none;
+  border-bottom: 3px solid #dec6c6;
+  outline:none;
+  padding: 8px;
+  border-radius: 4px;
+  transition: all 0.3s;
+  font-family: 'inherit';
+  font-size: 'inherit';
+  padding:'8px'
+}
+input:hover,textarea:hover{
+  border-bottom: 3px solid var(--text-color);
+
+}
+input:focus,textarea:focus {
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #dec6c6;
+  padding:0.5em;
+  box-shadow: -3px 3px 10px var(--text-color);
+
+}
+
+body {
+  margin: 0;
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+button {
+  background-color: var(--btn-bg);
+  color: var(--text-color);
+  border: 2.5px solid #dec6c6;
+  border-radius: 3em;
+  padding: 0.5em;
+  margin: 0.5em;
+  min-width: 10vw;
+  max-width: 20vw;
+  max-height: 5vh;
+  min-height: 5vh;
+  transition: box-shadow 0.4s ease-in-out;
+}
+
+button:hover {
+  border-color: #dec6c6;
+  box-shadow: -5px 5px 10px var(--text-color);
+}
+

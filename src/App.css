@@ -1,0 +1,51 @@
+#root {
+  height:100%;
+  width:100%;
+  margin:0;
+  padding:0;
+  text-align: center;
+}
+
+.vertical{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  gap:0.4em;
+}
+
+.horizontal{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.nearAdjust{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap:2rem;
+}
+
+.nearAdjust label{
+  width:150px;
+  text-align: left;
+  display: inline-block;
+}
+.nearAdjust input {
+  flex: 0 0 2em;        /* 4. Keeps the input box a consistent size */
+}
+
+nav{
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding:0 1rem;
+  margin-bottom: 2rem;
+}
+
+.todos input{
+  border:none;
+  outline:none;
+}
