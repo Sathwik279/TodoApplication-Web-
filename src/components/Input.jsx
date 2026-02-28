@@ -1,8 +1,10 @@
 import createTodo from '../services/createTodo'
 import { useAuth } from '../context/AuthContext'
+import { useNotification } from '../context/NotificationContext';
 
 export default function Input({fetchTodos}){
     const {token} = useAuth();
+    const {showNotification} = useNotification();
 
     const handleSubmit = async(e)=>{
             e.preventDefault();
@@ -15,11 +17,11 @@ export default function Input({fetchTodos}){
             try{
                 const response = await createTodo(data,token);
                 console.log(response)
-                alert("Created Successfully");
+                showNotification("created successffully",'success');
                 fetchTodos();
 
             }catch(error){
-                alert(error.message)
+                showNotification(error.message,'failure')
             }
          }
     return (
@@ -36,6 +38,7 @@ export default function Input({fetchTodos}){
                 <input id='description' name='description'></input>
                 </div>
             <br></br>
+               
             </div>
             <div>
                 <button>Submit</button>

@@ -9,18 +9,24 @@ import { Navigate } from 'react-router-dom'
 import { RouterProvider } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle.jsx'
 import { Outlet } from 'react-router-dom'
+import { useState } from 'react'
+import { NotificationProvider } from './context/NotificationContext.jsx'
 
 const ProtectedRoute = ({children})=>{
   const { token } = useAuth();
   return token ? children : <Navigate to='/login'/>;
 };
 
+
+
 // 1. Create a Layout component
 const Layout = () => (
   <div>
     <nav>
       <h1>My Todo App</h1>
+      
       <ThemeToggle /> {/* Toggle stays here globally */}
+      
     </nav>
     {/* Outlet is where the current page (Login or Todos) renders */}
     <Outlet /> 
@@ -49,8 +55,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  
   return (
+    <NotificationProvider>
     <RouterProvider router = {router}/>
+    </NotificationProvider>
   )
 }
 

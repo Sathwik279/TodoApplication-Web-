@@ -8,6 +8,8 @@ export default async function registerUser(data,token){
         },
         body: JSON.stringify(data)
     });
+        console.log(`response object is ${response}`)
+
 
     if(!response.ok){
         throw new Error("Registration Failed")

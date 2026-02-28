@@ -8,6 +8,8 @@ export default async function updateTodo(token,id,todo){
         },
         body: JSON.stringify(todo)
     });
+        console.log(`response object is ${response}`)
+
 
     if(!response.ok){
         throw new Error("Updation Failed")

@@ -8,6 +8,7 @@ export default async function loginUser(data){
         body: JSON.stringify(data)
     });
 
+    console.log(`response object is ${response}`)
     if(!response.ok){
         throw new Error("Registration Failed")
     }

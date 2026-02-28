@@ -7,6 +7,8 @@ export default async function deleteTodo(token,id){
             "Authorization":`Bearer ${token}`
         },
     });
+        console.log(`response object is ${response}`)
+
 
     if(!response.ok){
         throw new Error("Deletion Failed")

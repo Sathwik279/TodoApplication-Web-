@@ -36,12 +36,21 @@ export default function TodoPage(){
         <div>
         <Input fetchTodos={fetchTodos}/>
         <br></br>
+
         <div className='todos'>
+            <div className="todo-table header-row">
+            <div>Title</div>
+            <div>Description</div>
+            <div>AI Summary</div>
+            <div>AI</div>
+            <div>Action</div>
+            </div>
             {
+                
                 // this is a pure function of the todos variable
                 todos.map(
                     (todo)=>(
-                        <Todo todo={todo} key ={todo.id} id={todo.id} title = {todo.title} description = {todo.description} fetchTodos={fetchTodos}/>
+                        <Todo summary={todo.aiContent} todo={todo} key ={todo.id} id={todo.id} title = {todo.title} description = {todo.description} fetchTodos={fetchTodos}/>
                     )
                 )
             }
