@@ -1,50 +1,44 @@
-import createTodo from '../services/createTodo'
-import { useAuth } from '../context/AuthContext'
-import { useNotification } from '../context/NotificationContext';
+import { useTodos } from '../context/TodoContext';
 
-export default function Input({fetchTodos}){
-    const {token} = useAuth();
-    const {showNotification} = useNotification();
+export default function Input() {
+    const { addTodoLocal } = useTodos();
 
-    const handleSubmit = async(e)=>{
-            e.preventDefault();
-    
-            const data = {
-                title: e.target.title.value,
-                description: e.target.description.value,
-            }
-    
-            try{
-                const response = await createTodo(data,token);
-                console.log(response)
-                showNotification("created successffully",'success');
-                fetchTodos();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        const data = {
+            title: e.target.title.value,
+            description: e.target.description.value,
+        };
 
-            }catch(error){
-                showNotification(error.message,'failure')
-            }
-         }
+        console.log(`at input`,data)
+
+        await addTodoLocal(data);
+        e.target.reset();
+    };
+
     return (
-        <form onSubmit={handleSubmit}>
-            <div className='nearAdjust'>
-                <div>
-                <div className='nearAdjust'>
-                <label htmlFor='title'>Enter Title:</label>
-                <input id='title' name='title'></input>
+        <form onSubmit={handleSubmit} className="keep-input-form">
+            <div className='horizontal inputContainer'>
+                
+               <div className='nearAdjust'>
+                    <input 
+                        id='title' 
+                        name='title' 
+                        placeholder="Title" 
+                        className="keep-title-input"
+                    />
+                    <textarea 
+                        id='description' 
+                        name='description' 
+                        placeholder="Description"
+                        className="keep-desc-input"
+                        rows="3"
+                    />
                 </div>
-            <br></br>
-                <div className='nearAdjust'>
-                <label htmlFor='description'>Enter Description:</label>
-                <input id='description' name='description'></input>
-                </div>
-            <br></br>
-               
-            </div>
-            <div>
-                <button>Submit</button>
-            </div>
-            </div>
             
+                <button type="submit">Add Note</button>
+            </div>
         </form>
-    )
+    );
 }

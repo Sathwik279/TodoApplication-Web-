@@ -1,5 +1,5 @@
 
-export default async function deleteTodo(token,id){
+export default async function deleteTodoApi(token,id){
     const response = await fetch(`http://localhost:8080/crud/todo/${id}`,{
         method:"DELETE",
         headers:{

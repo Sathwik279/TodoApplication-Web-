@@ -1,5 +1,5 @@
 
-export default async function updateTodo(token,id,todo){
+export default async function updateTodoApi(token,id,todo){
     const response = await fetch(`http://localhost:8080/crud/todo/${id}`,{
         method:"PUT",
         headers:{

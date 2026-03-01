@@ -24,7 +24,7 @@ export default function Register() {
         }
     }
   return (
-    <div>
+    <div className='vertical'>
       <h1>Registration page</h1>
       <form onSubmit={handleSubmit}>
         <div className="vertical">

@@ -1,60 +1,24 @@
-import { useAuth } from '../context/AuthContext'
 import Input from './Input'
-import { useState } from 'react';
 import { useEffect } from 'react';
 import Todo from './Todo'
+import {useTodos} from '../context/TodoContext'
 
 export default function TodoPage(){
-    let [todos,setTodos] = useState([]);
-    const {token} = useAuth();
-
-    const fetchTodos = async () => {
-        
-        const response = await fetch("http://localhost:8080/crud/todos", {
-            headers: {
-            Authorization: `Bearer ${token}`
-            }
-        });
-
-        if(response.ok){
-            const data = await response.json();
-            console.log(data)
-            setTodos(data)
-        }
-    };
-
-
+    let { todos,fetchTodos } = useTodos();
+    
     useEffect(() => {
-        if (token)  
-        {
-            fetchTodos();
-        }
-
-    }, [token]);
+        fetchTodos();
+    }, [fetchTodos]);
 
     return (
-        <div>
-        <Input fetchTodos={fetchTodos}/>
-        <br></br>
+      <div className="vertical">
+        <Input/>
 
-        <div className='todos'>
-            <div className="todo-table header-row">
-            <div>Title</div>
-            <div>Description</div>
-            <div>AI Summary</div>
-            <div>AI</div>
-            <div>Action</div>
-            </div>
-            {
-                
-                // this is a pure function of the todos variable
-                todos.map(
-                    (todo)=>(
-                        <Todo summary={todo.aiContent} todo={todo} key ={todo.id} id={todo.id} title = {todo.title} description = {todo.description} fetchTodos={fetchTodos}/>
-                    )
-                )
-            }
-            </div>
+        <div className='masonry-grid'>
+            {todos.map((todo)=>(
+                <Todo key={todo.id} todo={todo}/>
+            ))}
         </div>
+      </div>
     )
 }

@@ -26,7 +26,7 @@ export default function Login() {
 
 
   return (
-    <div>
+    <div className='vertical'>
       <h1>Login page</h1>
       <form onSubmit={handleSubmit}>
         <div className="vertical">

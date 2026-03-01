@@ -9,8 +9,8 @@ import { Navigate } from 'react-router-dom'
 import { RouterProvider } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle.jsx'
 import { Outlet } from 'react-router-dom'
-import { useState } from 'react'
 import { NotificationProvider } from './context/NotificationContext.jsx'
+import { TodoProvider } from './context/TodoContext.jsx'
 
 const ProtectedRoute = ({children})=>{
   const { token } = useAuth();
@@ -58,7 +58,9 @@ function App() {
   
   return (
     <NotificationProvider>
-    <RouterProvider router = {router}/>
+      <TodoProvider>
+        <RouterProvider router = {router}/>
+      </TodoProvider>
     </NotificationProvider>
   )
 }

@@ -1,112 +1,99 @@
+import { useTodos } from '../context/TodoContext';
+import { useState, useEffect } from 'react';
 
-import deleteTodo from "../services/deleteTodo";
-import { useAuth } from '../context/AuthContext'
-import { useState,useEffect } from "react";
-import updateTodo from "../services/updateTodo";
-import { useNotification } from "../context/NotificationContext";
+export default function Todo({ todo }) {
+    const { updateTodo, deleteTodoLocal } = useTodos();
 
-export default function Todo({todo,id,title,description,summary,fetchTodos}){
-    const { token } = useAuth();
-    // 1. Normalize props to prevent 'null' !== '""' type mismatches
-    const safeTitle = title || "";
-    const safeDescription = description || "";
-    const safeSummary = summary || "";
-    // Ensure this defaults to a boolean
-    const safeAiEnabled = Boolean(todo.aiEnabled);
+    const [title, setTitle] = useState(todo.title || '');
+    const [description, setDescription] = useState(todo.description || '');
+    const [aiEnabled, setAiEnabled] = useState(Boolean(todo.aiEnabled));
     
-    const [curTitle, setCurTitle] = useState(safeTitle);
-    const [curDescription, setCurDescription] = useState(safeDescription);
-    const [curSummary, setCurSummary] = useState(safeSummary);
-    const [aiEnabled, setAiEnabled] = useState(safeAiEnabled);
-    const {showNotification} = useNotification();
-    
-    // 2. Sync local state whenever the parent component passes new props (like after fetchTodos)
+    const [isAiExpanded, setIsAiExpanded] = useState(false);
+
     useEffect(() => {
-        setCurTitle(safeTitle);
-        setCurDescription(safeDescription);
-        setCurSummary(safeSummary);
-        setAiEnabled(safeAiEnabled);
-    }, [safeTitle, safeDescription, safeSummary, safeAiEnabled]);
+        setTitle(todo.title || "");
+        setDescription(todo.description || "");
+        setAiEnabled(Boolean(todo.aiEnabled));
+    }, [todo]);
 
-    let isChanged =
-        curTitle !== safeTitle ||
-        curDescription !== safeDescription ||
-        curSummary !== safeSummary;
+    useEffect(() => {
+        const hasChanged =
+            title !== (todo.title || "") ||
+            description !== (todo.description || "") ||
+            aiEnabled !== Boolean(todo.aiEnabled);
 
-
-    const handleUpdate = async()=>{
-        try{
-            const updatedData = {
-            ...todo,
-            title: curTitle,
-            description: curDescription,
-            aiContent:curSummary,
-            aiEnabled: aiEnabled
-            }
-            await updateTodo(token,id,updatedData);
-            showNotification("updatedSuccessfully","success")
-            fetchTodos();
-        }catch(error){
-            showNotification(error.message || "Update failed", "error");
-        }
-    }
-    const handleDelete = async()=>{        
-            
-            try{
-                const response = await deleteTodo(token,id);
-                console.log(response)
-                showNotification("Deleted Successfully","success")
-
-                fetchTodos();
-
-            }catch(error){
-            showNotification(error.message || "Delete failed", "error");
-            }
+        if (!hasChanged || !todo.id) {
+            return;
         }
 
-    return(
-        
+        const timeoutId = setTimeout(() => {
+            const updatedData = { ...todo, title, description, aiEnabled };
+            updateTodo(todo.id, updatedData);
+        }, 1000);
+
+        return () => clearTimeout(timeoutId);
+    }, [title, description, aiEnabled, todo]);
+
+    return (
+        <div className="keep-card">
+            <input
+                className="keep-title-input"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title"
+            />
             
+            <textarea
+                className="keep-desc-input"
+                rows="4"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Take a note..."
+            />
 
-    <div className="todo-table">
+            {todo.aiContent && (
+                <div className="ai-summary-box">
+                    <span className="ai-label">AI</span>
+                    
+                    <div 
+                        className={`ai-text ${isAiExpanded ? 'expanded' : 'clamped'}`}
+                        onClick={() => setIsAiExpanded(!isAiExpanded)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                setIsAiExpanded(!isAiExpanded);
+                            }
+                        }}
+                        tabIndex={0}
+                        role="button"
+                        aria-expanded={isAiExpanded}
+                    >
+                        {todo.aiContent}
+                    </div>
+                    
+                    <div 
+                        className="ai-toggle-hint" 
+                        onClick={() => setIsAiExpanded(!isAiExpanded)}
+                    >
+                        {isAiExpanded ? 'Show less' : 'Read more...'}
+                    </div>
+                </div>
+            )}
 
-  {/* Content Row */}
-  <textarea
-    rows="2"
-    value={curTitle}
-    onChange={(e) => setCurTitle(e.target.value)}
-  />
-
-  <textarea
-    rows="2"
-    value={curDescription}
-    onChange={(e) => setCurDescription(e.target.value)}
-  />
-
-  <textarea
-    rows="2"
-    value={curSummary}
-    onChange={(e) => setCurSummary(e.target.value)}
-  />
-
-  <div className="ai-toggle">
-    <label className="switch">
-      <input
-        type="checkbox"
-        checked={aiEnabled}
-        onChange={(e) => setAiEnabled(e.target.checked)}
-      />
-      <span className="slider"></span>
-    </label>
-  </div>
-
-  {isChanged ? (
-    <button onClick={handleUpdate}>Save</button>
-  ) : (
-    <button onClick={handleDelete}>Delete</button>
-  )}
-
-</div>
-    )
+            <div className="card-actions">
+                <div className='aiButton'>
+                    <label className="switch">
+                        <input
+                            type="checkbox"
+                            checked={aiEnabled}
+                            onChange={(e) => setAiEnabled(e.target.checked)}
+                        />
+                        <span className="slider"></span>
+                    </label>
+                    <span>Ai</span>
+                </div>
+                <button onClick={() => deleteTodoLocal(todo.id)}>Del</button>
+            </div>
+        </div>
+    );
 }
-
