@@ -37,7 +37,7 @@ export default function Login() {
           <br></br>
           <div className="nearAdjust">
             <label htmlFor="password">Enter Password:</label>
-            <input id="password"></input>
+            <input id="password" type='password'></input>
           </div>
           <br></br>
           <br></br>

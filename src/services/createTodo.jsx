@@ -1,6 +1,8 @@
 
 export default async function registerUser(data,token){
-    const response = await fetch("http://localhost:8080/crud/todo",{
+    const baseURL = import.meta.env.VITE_API_URL;
+
+    const response = await fetch(`${baseURL}/crud/todo`,{
         method:"POST",
         headers:{
             "Content-Type":"application/json",

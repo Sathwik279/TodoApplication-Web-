@@ -1,6 +1,8 @@
 
 export default async function registerUser(data){
-    const response = await fetch("http://localhost:8080/auth/register",{
+        const baseURL = import.meta.env.VITE_API_URL;
+
+    const response = await fetch(`${baseURL}/auth/register`,{
         method:"POST",
         headers:{
             "Content-Type":"application/json"

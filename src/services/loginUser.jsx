@@ -1,6 +1,8 @@
 
 export default async function loginUser(data){
-    const response = await fetch("http://localhost:8080/auth/login",{
+        const baseURL = import.meta.env.VITE_API_URL;
+
+    const response = await fetch(`${baseURL}/auth/login`,{
         method:"POST",
         headers:{
             "Content-Type":"application/json"

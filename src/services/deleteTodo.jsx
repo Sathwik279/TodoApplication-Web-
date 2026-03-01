@@ -1,6 +1,8 @@
 
 export default async function deleteTodoApi(token,id){
-    const response = await fetch(`http://localhost:8080/crud/todo/${id}`,{
+        const baseURL = import.meta.env.VITE_API_URL;
+
+    const response = await fetch(`${baseURL}/crud/todo/${id}`,{
         method:"DELETE",
         headers:{
             "Content-Type":"application/json",
